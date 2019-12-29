@@ -1,0 +1,98 @@
+
+{% extends "index.html" %}
+{% block body %}
+
+<div class="col-sm-6 float-right">
+    <h1 style="text-align:center">These are the books you've rated</h1>
+    <table>
+
+        <tr>
+            <th>Book ID</th>
+            <th>Book Title</th>
+            <th>Your Rating</th>
+        </tr>
+        {% for items in user_ratings_list %}
+            <tr>
+                <td>{{items[0]}}</td>
+                <td>{{items[1]}}</td>
+                <td>{{items[2]}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>
+<div class="col-sm-6 float-right">
+        <h3 style="text-align:center">These are the books we recommend you read</h3>
+        <table>
+    
+            <tr>
+                <th>Book ID</th>
+                <th>Book Title</th>
+                <th>Your Rating</th>
+            </tr>
+            {% for items in user_recommended_list %}
+                <tr>
+                    <td>{{items[0]}}</td>
+                    <td>{{items[1]}}</td>
+                    <td>{{items[2]}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    
+    </div>
+
+<div class="col-sm.6 float-left" style="padding: 8px;">
+    <h3>Rate a new book/change a rating?</h3>
+    <form action={{ url_for('addRating', user = user ) }} method="POST">
+        <div class="form-group">
+            <label for="book_ids">Book</label>
+            <select class="form-control" id="book_ids" name="book">
+                {% for i in range(books|length) %}
+                    <option>{{books[i][0]}}: {{books[i][1]}}</option>
+                {% endfor %}
+            </select>
+
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="rating1" checked value=1>
+            <label class="form-check-label" for="inlineradio1">1</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="rating2" value=2>
+            <label class="form-check-label" for="inlineradio2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="rating3" value=3>
+            <label class="form-check-label" for="inlineradio3">3</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="rating4" value=4>
+            <label class="form-check-label" for="inlineradio4">4</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="rating5" value=5>
+            <label class="form-check-label" for="inlineradio5">5</label>
+        </div>
+        <button type="submit" class="btn btn-success mr-sm-2">Submit review</button>
+    </form>
+</div>
+<div class="col-sm.6 float-right" style="padding: 8px;">
+        <h3>Delete a rating for a book?</h3>
+        <form action={{ url_for('delRating', user = user ) }} method="POST">
+            <div class="form-group">
+                <label for="book_ids">Book</label>
+                <select class="form-control" id="book_ids" name="book">
+                    {% for i in range(user_ratings_list|length) %}
+                        <option>{{user_ratings_list[i][0]}}: {{user_ratings_list[i][1]}}</option>
+                    {% endfor %}
+                </select>
+                
+    
+            </div>
+            <button type="submit" class="btn btn-danger mr-sm-2">Delete review</button>
+        </form>
+        
+    </div>
+
+
+{% endblock %}

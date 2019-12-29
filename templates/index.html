@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    <title>Book Recommender</title>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        {%if R_error %}
+            $(document).ready(function(){
+                $("#register").modal('show');
+            });
+        {% endif %}
+        {% if L_error %}
+            $(document).ready(function(){
+                    $("#login").modal('show');
+                });
+        {% endif %}
+    </script>
+</head>
+<body>
+    <!-- NavBar-->
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark" >
+            <a class="navbar-brand" style="color:aliceblue ;">
+                Book Reviews Ltd.
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-dark" id = "collapsibleNavbar" >
+                <ul class="navbar-nav mr-auto">
+                    
+                    <li class="nav-item">
+                        <a id="nav-books" class="nav-link" href={{url_for('main')}}>All Available Books</a>
+                    </li>
+                    {% if logged_in %}
+                    <li class="nav-item">
+                        <a id="nav-user" class="nav-link" href={{ url_for('dashboard', user = user ) }}>User Dashboard</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% if logged_in %}
+                
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="btn btn-danger mr-sm-2" >Logout</button>
+                    </form>
+                
+                {% else %}
+                
+
+                    <button id="btn-register" class="btn btn-success mr-sm-2 " data-toggle="modal" data-target="#register">Register</button>
+
+                    <button id="btn-login" class="btn btn-success mr-sm-2 " data-toggle="modal" data-target="#login">Login</button>
+
+            
+                {% endif %}
+    
+    
+    
+    
+    
+            </div>
+        </nav>
+
+        <div class="modal fade" id="login">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+        
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Login</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <form id="loginform" action="/login" method="POST">
+                                <div class="form-group">
+        
+                                    <input type="text" class="form-control" placeholder="Username" name="username">
+                                </div>
+                                <div class="form-group">
+                                    
+                                    <input type="password" class="form-control" placeholder="Password" name="password">
+                                    
+                                </div>
+                              
+                                <div id="loginfailed" style="color: red">{{L_error}}</div>
+                      
+                                <button type="submit" class="btn btn-success">Log in</button>
+                            </form>
+                        </div>
+        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-basic" disabled>Not got an account yet?</button>
+                            <button type ="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#register">Click here to make one</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="register">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+        
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Register</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <form id="registerform" action="/register" method="POST">
+                                <div class="form-group">
+        
+                                    <input type="text" class="form-control" placeholder="Username" name="username">
+                                </div>
+                                <div class="form-group">
+                                    
+                                    <input type="password" class="form-control" placeholder="Password" name="password">
+                                    
+                                </div>
+                                <div id="registerfailed" style="color: red">{{R_error}}</div>
+                                <button type="submit" class="btn btn-success">Register</button>
+                            </form>
+                        </div>
+        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-basic" disabled>Already have an account?</button>
+                            <button type ="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#login">Click here to make one</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+    
+{% block body %}{% endblock %}
+</body>
